@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Tic Tac Toe</h1>
+    <div id="game-body">
+        <p id="players"></p>
+        <p id="you"></p>
+        <p id="current"></p>
+        <div id="board" class="board">
+            <div class="cell" id="cell-0" onclick="makeMove(0)"></div>
+            <div class="cell" id="cell-1" onclick="makeMove(1)"></div>
+            <div class="cell" id="cell-2" onclick="makeMove(2)"></div>
+            <div class="cell" id="cell-3" onclick="makeMove(3)"></div>
+            <div class="cell" id="cell-4" onclick="makeMove(4)"></div>
+            <div class="cell" id="cell-5" onclick="makeMove(5)"></div>
+            <div class="cell" id="cell-6" onclick="makeMove(6)"></div>
+            <div class="cell" id="cell-7" onclick="makeMove(7)"></div>
+            <div class="cell" id="cell-8" onclick="makeMove(8)"></div>
+        </div>
+        <p id="win-info"></p>
+        <button id="reset-board-btn" onclick="resetBoard()" style="display: none;">Play again</button>
+    </div>
+    <script src="game.js"></script>
+    
+</body>
+</html>

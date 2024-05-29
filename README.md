@@ -1,8 +1,8 @@
-# Jane Doe - Terraform, EC2, TicTacToe report
+# Zuzanna Aszkiełowicz - Terraform, EC2, TicTacToe report
 
 - Course: *Cloud programming*
-- Group:
-- Date:
+- Group: Tuesday 11:15-13:00
+- Date: 14.05.2024
 
 ## Environment architecture
 

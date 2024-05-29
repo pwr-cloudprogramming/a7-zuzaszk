@@ -1,0 +1,115 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: auto;
+    padding: 0;
+    background-color: #b0d4ff;
+    color: #fff;
+    width: 400px;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    background-color: #08356338;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+#username-form {
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#game-body {
+    margin: auto;
+    padding: 20px;
+    background-color: #08356338;
+    border-radius: 8px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #000000;
+}
+
+input[type="text"] {
+    width: calc(100% - 20px - 2px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+.board {
+    max-width: max-content;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    background-color: #34495e;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    background-color: #2c3e50;
+    border: 2px solid #34495e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.cell:hover {
+    background-color: #34495e;
+}
+
+#players,
+#you,
+#current,
+#win-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#players {
+    font-size: 18px;
+}
+
+#you {
+    font-size: 16px;
+    font-style: italic;
+}
+
+#current {
+    font-size: 20px;
+}
+
+#win-info {
+    font-size: 24px;
+    transition: all 0.3 ease;
+}
