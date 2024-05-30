@@ -102,9 +102,9 @@ resource "aws_elastic_beanstalk_application" "frontend_app" {
 resource "aws_elastic_beanstalk_environment" "backend_env" {
   name                = "backend-env-1"
   application         = aws_elastic_beanstalk_application.backend_app.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.3.0 running ECS"
+  solution_stack_name = "64bit Amazon Linux 2 v3.3.1 running ECS"
   version_label       = aws_elastic_beanstalk_application_version.backend_version.name
-  cname_prefix        = "backend-app"
+  cname_prefix        = "backend-app-${random_id.backend.hex}"
 
   setting {
     namespace = "aws:ec2:vpc"
@@ -164,9 +164,9 @@ resource "aws_elastic_beanstalk_environment" "backend_env" {
 resource "aws_elastic_beanstalk_environment" "frontend_env" {
   name                = "frontend-env-1"
   application         = aws_elastic_beanstalk_application.frontend_app.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.3.0 running ECS"
+  solution_stack_name = "64bit Amazon Linux 2 v3.3.1 running ECS"
   version_label       = aws_elastic_beanstalk_application_version.frontend_version.name
-  cname_prefix        = "frontend-app"
+  cname_prefix        = "frontend-app-${random_id.frontend.hex}"
 
   setting {
     namespace = "aws:ec2:vpc"
@@ -242,6 +242,18 @@ resource "aws_elastic_beanstalk_application_version" "frontend_version" {
 
 resource "aws_s3_bucket" "app_bucket" {
   bucket = "app-bucket-${random_id.bucket_id.hex}"
+}
+
+resource "random_id" "bucket_id" {
+  byte_length = 8
+}
+
+resource "random_id" "backend" {
+  byte_length = 8
+}
+
+resource "random_id" "frontend" {
+  byte_length = 8
 }
 
 resource "aws_s3_object" "backend_s3o" {
