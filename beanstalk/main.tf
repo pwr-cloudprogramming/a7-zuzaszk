@@ -207,8 +207,7 @@ resource "aws_elastic_beanstalk_environment" "frontend_env" {
   setting {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "ServiceRole"
-    value     = "arn:aws:iam::975050155760:role/LabRole" 
-    # todo: check arn
+    value     = "arn:aws:iam::891377008031:role/LabRole" 
   }
 
   setting {
