@@ -6,9 +6,6 @@ resource "aws_vpc" "my_vpc" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
-  tags = {
-    Name = "my_vpc"
-  }
 }
 
 resource "aws_internet_gateway" "my_igw" {
@@ -20,14 +17,14 @@ resource "aws_internet_gateway" "my_igw" {
 
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = aws_vpc.my_vpc.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "10.0.101.0/24"
   availability_zone       = "us-east-1a"
   map_public_ip_on_launch = true
 }
 
 resource "aws_subnet" "private_subnet" {
   vpc_id            = aws_vpc.my_vpc.id
-  cidr_block        = "10.0.2.0/24"
+  cidr_block        = "10.0.102.0/24"
   availability_zone = "us-east-1b"
 }
 
@@ -88,191 +85,94 @@ resource "aws_security_group" "server_sg" {
   }
 }
 
-resource "aws_elastic_beanstalk_application" "backend_app" {
-  name        = "backend_app"
-  description = "Backend Application"
+resource "aws_elastic_beanstalk_application" "my_app" {
+  name        = "my-app-266608"
+  description = "My Tic Tac Toe Application"
 }
 
-resource "aws_elastic_beanstalk_application" "frontend_app" {
-  name        = "frontend_app"
-  description = "Frontend Application"
-}
-
-
-resource "aws_elastic_beanstalk_environment" "backend_env" {
-  name                = "backend-env-1"
-  application         = aws_elastic_beanstalk_application.backend_app.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.3.1 running ECS"
-  version_label       = aws_elastic_beanstalk_application_version.backend_version.name
-  cname_prefix        = "backend-app-${random_id.backend.hex}"
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "VPCId"
-    value     = aws_vpc.my_vpc.id
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "IamInstanceProfile"
-    value     = "LabInstanceProfile"
-  }
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "Subnets"
-    value     = join(",", [aws_subnet.public_subnet.id, aws_subnet.private_subnet.id])
-  }
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "AssociatePublicIpAddress"
-    value     = "true"
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "SecurityGroups"
-    value     = aws_security_group.server_sg.id
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "EnvironmentType"
-    value     = "LoadBalanced"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "ServiceRole"
-    value     = "arn:aws:iam::891377008031:role/LabRole" 
-  }
-
-  setting {
-    namespace = "aws:ec2:instances"
-    name      = "SupportedArchitectures"
-    value     = "x86_64"
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "InstanceType"
-    value     = "t2.small"
-  }
-}
-
-resource "aws_elastic_beanstalk_environment" "frontend_env" {
-  name                = "frontend-env-1"
-  application         = aws_elastic_beanstalk_application.frontend_app.name
-  solution_stack_name = "64bit Amazon Linux 2 v3.3.1 running ECS"
-  version_label       = aws_elastic_beanstalk_application_version.frontend_version.name
-  cname_prefix        = "frontend-app-${random_id.frontend.hex}"
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "VPCId"
-    value     = aws_vpc.my_vpc.id
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "IamInstanceProfile"
-    value     = "LabInstanceProfile"
-  }
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "Subnets"
-    value     = join(",", [aws_subnet.public_subnet.id, aws_subnet.private_subnet.id])
-  }
-
-  setting {
-    namespace = "aws:ec2:vpc"
-    name      = "AssociatePublicIpAddress"
-    value     = "true"
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "SecurityGroups"
-    value     = aws_security_group.server_sg.id
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "EnvironmentType"
-    value     = "LoadBalanced"
-  }
-
-  setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "ServiceRole"
-    value     = "arn:aws:iam::891377008031:role/LabRole" 
-  }
-
-  setting {
-    namespace = "aws:ec2:instances"
-    name      = "SupportedArchitectures"
-    value     = "x86_64"
-  }
-
-  setting {
-    namespace = "aws:autoscaling:launchconfiguration"
-    name      = "InstanceType"
-    value     = "t2.small"
-  }
-}
-
-resource "aws_elastic_beanstalk_application_version" "backend_version" {
-  name        = "backend_v1"
-  application = aws_elastic_beanstalk_application.backend_app.name
-  description = "Backend application version created by Terraform"
+resource "aws_elastic_beanstalk_application_version" "version" {
+  name        = "v1"
+  application = aws_elastic_beanstalk_application.my_app.name
+  description = "My Application - Initial Version"
   bucket      = aws_s3_bucket.app_bucket.bucket
-  key         = aws_s3_object.backend_s3o.key
+  key         = aws_s3_object.my_s3o.key
 }
-
-resource "aws_elastic_beanstalk_application_version" "frontend_version" {
-  name        = "frontend_v2"
-  application = aws_elastic_beanstalk_application.frontend_app.name
-  description = "Frontend application version created by Terraform"
-  bucket      = aws_s3_bucket.app_bucket.bucket
-  key         = aws_s3_object.frontend_s3o.key
-}
-
 
 resource "aws_s3_bucket" "app_bucket" {
-  bucket = "app-bucket-${random_id.bucket_id.hex}"
+  bucket = "app-bucket-266608"
 }
 
-resource "random_id" "bucket_id" {
-  byte_length = 8
-}
-
-resource "random_id" "backend" {
-  byte_length = 8
-}
-
-resource "random_id" "frontend" {
-  byte_length = 8
-}
-
-resource "aws_s3_object" "backend_s3o" {
+resource "aws_s3_object" "my_s3o" {
   bucket = aws_s3_bucket.app_bucket.bucket
-  key = "backend.zip"
-  source = "backend.zip"
+  key    = "app.zip"
+  source = "app.zip"
 }
 
-resource "aws_s3_object" "frontend_s3o" {
-  bucket = aws_s3_bucket.app_bucket.bucket
-  key = "frontend.zip"
-  source = "frontend.zip"
+
+resource "aws_elastic_beanstalk_environment" "my_env" {
+  name                = "my-app-env"
+  application         = aws_elastic_beanstalk_application.my_app.name
+  solution_stack_name = "64bit Amazon Linux 2 v3.3.1 running ECS"
+  # solution_stack_name = "64bit Amazon Linux 2 v3.6.2 running Python 3.8"
+  version_label       = aws_elastic_beanstalk_application_version.version.name
+  cname_prefix        = "my-app-266608"
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "VPCId"
+    value     = aws_vpc.my_vpc.id
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = "LabInstanceProfile"
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "Subnets"
+    value     = join(",", [aws_subnet.public_subnet.id, aws_subnet.private_subnet.id])
+  }
+
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "AssociatePublicIpAddress"
+    value     = "true"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "SecurityGroups"
+    value     = aws_security_group.server_sg.id
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "EnvironmentType"
+    value     = "LoadBalanced"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "ServiceRole"
+    value     = "arn:aws:iam::891377008031:role/LabRole"
+  }
+
+  setting {
+    namespace = "aws:ec2:instances"
+    name      = "SupportedArchitectures"
+    value     = "x86_64"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
+    value     = "t2.small"
+  }
 }
 
-output "backend_beanstalk_app_url" {
-  value = "http://${aws_elastic_beanstalk_environment.backend_env.cname}:5000"
-}
-
-output "frontend_beanstalk_app_url" {
-  value = "http://${aws_elastic_beanstalk_environment.frontend_env.cname}:80"
+output "my_beanstalk_app_url" {
+  value = "http://${aws_elastic_beanstalk_environment.my_env.cname}"
 }
 
