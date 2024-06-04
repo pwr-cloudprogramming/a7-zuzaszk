@@ -135,7 +135,11 @@ Screenshots of configured AWS services. Screenshots of your application running.
 
 ## Working for Beanstalk
 ![Sample image](img/image1.png)
+![Sample image](img/image.png)
+![Sample image](img/image5.png)
+![Sample image](img/image2.png)
 ![Sample image](img/image3.png)
+
 
 ## Working for Fargate
 ![Sample image](img/image4.png)
@@ -146,10 +150,11 @@ Screenshots of configured AWS services. Screenshots of your application running.
 I empowered my competencies in problem-solving, that's for sure, as well as patience. Also, I deepend my knowledge in terraform configuration. Last but DEFINITELY not least, how to define the app architecture using Beanstalk and Fargate. Fargate was very pleasant!
 
 - **What obstacles did you overcome?**<br>
-In Beanstalk, the biggest obstacle for me was just setting up the environment, specifically, making it work. I followed so many tutorials, watched lots of videos, went through the previous lists, asked ChatGPT, asked Google, asked GitHub Copilot, and my configuration (which eventually worked) didn't cooperate with me. It was pretty clear to follow the tutorials and set up all the resources, and I couldn't really find the mistake in my `main.tf`, nor in the very application.
+In Beanstalk, the biggest obstacle for me was just setting up the environment, specifically, making it work. I followed so many tutorials, watched lots of videos, went through the previous lists, asked ChatGPT, asked Google, asked GitHub Copilot, and my configuration (which eventually worked) didn't cooperate with me. It was pretty clear to follow the tutorials and set up all the resources, and I couldn't really find the mistake in my `main.tf`, nor in the very application.<br>
+Also I had a problem with backend working. It wasn't connecting to the backend. The thing I had to fix was changing localhost to the backend address, and... moving `requirements.txt` to `src/` directory, because without it even after changing the address it wasn't working. Also I decided to run two separate apps and environment for this (before I had it in one), to be able to better track the progress.
 
 - **What did you help most in overcoming obstacles?**<br>
-The thing that *actually* helped me was, well... me, myself, and I. Since I couldn't really find the problem in the configuration, I had to rely on my problem-solving skills, which I applied in breaking down the problem. I commented out the whole configuration, and began to uncomment it part by part, to see where the problem is. So I was planning out the stages, and applying them, and with that it appeared that there was no problem at all actually. As I did it this way, I applied everything successfully! 
+The thing that *actually* helped me was, well... me, myself, and I (and my ability to read and analyze logs). Since I couldn't really find the problem in the configuration, I had to rely on my problem-solving skills, which I applied in breaking down the problem. I commented out the whole configuration, and began to uncomment it part by part, to see where the problem is. So I was planning out the stages, and applying them, and with that it appeared that there was no problem at all actually. As I did it this way, I applied everything successfully!
 
 - **Was that something that surprised you?** <br>
 It's always surprising for me how I repeat the same step over and over again, and it doesn't work, but suddenly it starts working. It's so amazing. I love when things work. I'm never happier than when I can see how the thing I've built works as (not) expected. One of my favorite views:<br>

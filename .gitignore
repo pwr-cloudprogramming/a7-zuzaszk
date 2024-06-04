@@ -4,3 +4,5 @@ terraform.tfstate
 terraform.tfstate.backup
 app/
 app_2/
+add*
+change*
