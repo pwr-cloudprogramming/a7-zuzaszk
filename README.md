@@ -15,7 +15,7 @@ This repository contains Terraform configurations to set up the infrastructure f
 3. **Internet Gateway**: Allows internet access to resources within the VPC.
 4. **Route Tables**: Manages routing within the VPC.
 5. **Security Groups**: Controls inbound and outbound traffic to the resources.
-6. **Elastic Beanstalk Application and Environment**: Manages the deployment and scaling of the application.
+6. **Elastic Beanstalk Applications and Environments**: Manages the deployment and scaling of the backend and frontend applications.
 7. **S3 Bucket**: Stores application code for Elastic Beanstalk deployment.
 
 ### **Detailed Components**
@@ -35,29 +35,55 @@ This repository contains Terraform configurations to set up the infrastructure f
 #### Route Table
 - **Route**: `0.0.0.0/0` to Internet Gateway
 
-#### Security Group
-- **Name**: `server_sg`
-- **Inbound Rules**:
-  - HTTP for backend on port `5000`
-  - HTTP for frontend on port `80`
-  - SSH on port `22`
-- **Outbound Rules**: All traffic allowed
+#### Security Groups
+- **Backend Security Group**:
+  - **Name**: `backend_sg`
+  - **Description**: Allow traffic for Backend
+  - **Inbound Rules**:
+    - HTTP for backend on port `5000`
+  - **Outbound Rules**: All traffic allowed
+- **Frontend Security Group**:
+  - **Name**: `frontend_sg`
+  - **Description**: Allow traffic for Frontend
+  - **Inbound Rules**:
+    - HTTP for frontend on port `80`
+  - **Outbound Rules**: All traffic allowed
 
 #### Elastic Beanstalk
-- **Application Name**: `my-app-266608`
-- **Environment Name**: `my-app-env`
-- **Solution Stack**: `64bit Amazon Linux 2 v3.3.1 running ECS`
-- **Instance Type**: `t2.small`
-- **Environment Type**: LoadBalanced
-- **Subnets**: Public and Private Subnets
-- **Security Group**: `server_sg`
-- **Service Role**: `LabRole`
-- **Instance Profile**: `LabInstanceProfile`
-- **Supported Architectures**: `x86_64`
+- **Backend Application**:
+  - **Application Name**: `backend-app-266608`
+  - **Environment Name**: `my-backend-env-266608`
+  - **Solution Stack**: `64bit Amazon Linux 2023 v4.3.2 running Docker`
+  - **Instance Type**: `t2.small`
+  - **Environment Type**: LoadBalanced
+  - **Subnets**: Public and Private Subnets
+  - **Security Group**: `backend_sg`
+  - **Service Role**: `arn:aws:iam::891377008031:role/LabRole`
+  - **Supported Architectures**: `x86_64`
+  - **Application Version**: `v1`
+  - **S3 Bucket**: `app-bucket-266608`
+  - **Application Code**: `backend_deploy.zip`
+  - **Output URL**: `http://${aws_elastic_beanstalk_environment.backend_env.cname}`
+
+- **Frontend Application**:
+  - **Application Name**: `frontend-app-266608`
+  - **Environment Name**: `my-frontend-env-266608`
+  - **Solution Stack**: `64bit Amazon Linux 2023 v4.3.2 running Docker`
+  - **Instance Type**: `t2.small`
+  - **Environment Type**: LoadBalanced
+  - **Subnets**: Public and Private Subnets
+  - **Security Group**: `frontend_sg`
+  - **Service Role**: `arn:aws:iam::891377008031:role/LabRole`
+  - **Supported Architectures**: `x86_64`
+  - **Application Version**: `v2`
+  - **S3 Bucket**: `app-bucket-266608`
+  - **Application Code**: `frontend_deploy.zip`
+  - **Output URL**: `http://${aws_elastic_beanstalk_environment.frontend_env.cname}`
 
 #### S3 Bucket
 - **Bucket Name**: `app-bucket-266608`
-- **Application Code**: `app.zip`
+- **Backend Application Code**: `backend_deploy.zip`
+- **Frontend Application Code**: `frontend_deploy.zip`
 
 ## Fargate
 This repository contains Terraform configurations to set up the infrastructure for deploying a web application using AWS services with ECS Fargate. The architecture includes a Virtual Private Cloud (VPC) with public and private subnets, an internet gateway, route tables, security groups, and an ECS cluster with Fargate tasks for the application.
